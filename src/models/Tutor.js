@@ -1,10 +1,10 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+const sequelize = require('../config/db');
 
-const Doctor = sequelize.define('doctor', {
+const Tutor = sequelize.define('tutor', {
     id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        primaryKey: true,
         autoIncrement: true
     },
     nombre: {
@@ -15,10 +15,6 @@ const Doctor = sequelize.define('doctor', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    especialidad: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -26,16 +22,27 @@ const Doctor = sequelize.define('doctor', {
         validate: {
             isEmail: true
         }
-    }, 
+    },
     telefono: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
-            max: 9
+            len: {
+                args: [9, 15],
+                msg: 'El teléfono debe tener 9 números (912345678)'
+            },
+            isNumeric: {
+                msg: 'El teléfono solo debe contener números'
+            }
         }
+    },
+    direccion: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
-}, {
-    tableName: 'doctores'
+},{
+    tableName: 'tutores'
 });
 
-module.exports = Doctor;
+module.exports = Tutor;
